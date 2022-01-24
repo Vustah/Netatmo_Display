@@ -55,7 +55,7 @@ def refresh_sensors(credentials):
     except socket.timeout as e:
         print(e, end=" ")
         print("\nA timeout occoured.")
-        return None
+        return "TIMEOUT"
     try:
         dev = lnetatmo.WeatherStationData(auth)
         stations = dev.stationByName()
@@ -85,12 +85,17 @@ try:
 
         while(1):
             stations = refresh_sensors(credentials)
-            # list_all_parameters(stations)
-            if stations == None:
-                break
-            printstring = getTemperatureString(stations)
-            print(printstring)
-            time.sleep(10)
+            if not isinstance(stations,dict):
+                if stations.upper() == "TIMEOUT":
+                	print("TIMEOUT")
+                	time.sleep(60)
+            else:
+		        # list_all_parameters(stations)
+                if stations == None:
+                    break
+                printstring = getTemperatureString(stations)
+                print(printstring)
+                time.sleep(10)
 
 except KeyboardInterrupt:
     exit(1)
