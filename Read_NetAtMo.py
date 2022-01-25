@@ -29,6 +29,8 @@ def list_all_parameters(station):
 def setup():
     username = input("Type username: ")
     password = pwinput("Type password: ")
+    
+    if not(isinstance(username,str) and isinstance(password,str)): return False
 
     credentials = {"NETATMO_CLIENT_ID": "61a3c0627d508c2896196327",
                    "NETATMO_CLIENT_SECRET": "gjqSM5c32QNdRuTZWtrYCojSOAGAyERT3JzagXK1P8",
@@ -72,7 +74,7 @@ def getTemperatureString(stations):
     today = datetime.date.today()
     
     temp_str = today.strftime("%d/%m/%Y") +" "+ time_now.strftime("%H:%M:%S")
-    temp_str += "\n{moduleName}: {temperature} degC\n".format(moduleName=stations["module_name"],temperature=str(stations["dashboard_data"]["Temperature"]) )
+    temp_str += "\t{moduleName}: {temperature} degC\t".format(moduleName=stations["module_name"],temperature=str(stations["dashboard_data"]["Temperature"]) )
     
     for module in stations["modules"]:
         temp_str += "{moduleName}: {temperature} degC\n".format(moduleName=module["module_name"],temperature=str(module["dashboard_data"]["Temperature"]))
@@ -82,20 +84,19 @@ try:
     if __name__ == "__main__":
         print(" ")
         credentials = setup()
-
         while(1):
             stations = refresh_sensors(credentials)
             if not isinstance(stations,dict):
                 if stations.upper() == "TIMEOUT":
                 	print("TIMEOUT")
-                	time.sleep(60)
+                	time.sleep(10*60)
             else:
 		        # list_all_parameters(stations)
                 if stations == None:
                     break
                 printstring = getTemperatureString(stations)
                 print(printstring)
-                time.sleep(10)
+                time.sleep(1*60)
 
 except KeyboardInterrupt:
     exit(1)
