@@ -56,7 +56,6 @@ def refresh_sensors(credentials):
         return None
     except socket.timeout as e:
         print(e, end=" ")
-        print("\nA timeout occoured.")
         return "TIMEOUT"
     try:
         dev = lnetatmo.WeatherStationData(auth)
@@ -74,10 +73,10 @@ def getTemperatureString(stations):
     today = datetime.date.today()
     
     temp_str = today.strftime("%d/%m/%Y") +" "+ time_now.strftime("%H:%M:%S")
-    temp_str += "\t{moduleName}: {temperature} degC\t".format(moduleName=stations["module_name"],temperature=str(stations["dashboard_data"]["Temperature"]) )
+    temp_str += "\t|{moduleName}: {temperature} degC\t".format(moduleName=stations["module_name"],temperature=str(stations["dashboard_data"]["Temperature"]) )
     
     for module in stations["modules"]:
-        temp_str += "{moduleName}: {temperature} degC\n".format(moduleName=module["module_name"],temperature=str(module["dashboard_data"]["Temperature"]))
+        temp_str += "|{moduleName}: {temperature} degC".format(moduleName=module["module_name"],temperature=str(module["dashboard_data"]["Temperature"]))
     return temp_str
 
 try:
@@ -89,13 +88,13 @@ try:
             if not isinstance(stations,dict):
                 if stations.upper() == "TIMEOUT":
                 	print("TIMEOUT")
-                	time.sleep(10*60)
+                	time.sleep(10)
             else:
 		        # list_all_parameters(stations)
                 if stations == None:
                     break
                 printstring = getTemperatureString(stations)
-                print(printstring)
+                print(printstring, end="\n")
                 time.sleep(1*60)
 
 except KeyboardInterrupt:
