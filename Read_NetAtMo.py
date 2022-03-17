@@ -7,7 +7,7 @@ from pwinput import pwinput
 import socket
 import time
 import datetime
-
+import RPi.GPIO as GPIO
 
 def list_all_parameters(station):
     for key_1 in station:
@@ -79,6 +79,10 @@ def getTemperatureString(stations):
         temp_str += "|{moduleName}: {temperature} degC".format(moduleName=module["module_name"],temperature=str(module["dashboard_data"]["Temperature"]))
     return temp_str
 
+def write_display(value):
+	return 
+
+
 try:
     if __name__ == "__main__":
         print(" ")
@@ -86,9 +90,13 @@ try:
         while(1):
             stations = refresh_sensors(credentials)
             if not isinstance(stations,dict):
-                if stations.upper() == "TIMEOUT":
-                	print("TIMEOUT")
-                	time.sleep(10)
+                try:
+                    if stations.upper() == "TIMEOUT":
+                    	print("TIMEOUT")
+                    	time.sleep(10)
+                except AttributeError:
+                    print("Please type in username and password!")
+                    break
             else:
 		        # list_all_parameters(stations)
                 if stations == None:
