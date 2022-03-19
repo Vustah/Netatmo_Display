@@ -30,6 +30,8 @@ def list_all_parameters(station):
 def setup():
     username = input("Type username: ")
     password = pwinput("Type password: ")
+    
+    if not(isinstance(username,str) and isinstance(password,str)): return False
 
     credentials = {"NETATMO_CLIENT_ID": "61a3c0627d508c2896196327",
                    "NETATMO_CLIENT_SECRET": "gjqSM5c32QNdRuTZWtrYCojSOAGAyERT3JzagXK1P8",
@@ -73,10 +75,10 @@ def getTemperatureString(stations):
     today = datetime.date.today()
     
     temp_str = today.strftime("%d/%m/%Y") +" "+ time_now.strftime("%H:%M:%S")
-    temp_str += "\n{moduleName}: {temperature} degC\n".format(moduleName=stations["module_name"],temperature=str(stations["dashboard_data"]["Temperature"]) )
+    temp_str += "\t|{moduleName}: {temperature} degC\t".format(moduleName=stations["module_name"],temperature=str(stations["dashboard_data"]["Temperature"]) )
     
     for module in stations["modules"]:
-        temp_str += "{moduleName}: {temperature} degC\n".format(moduleName=module["module_name"],temperature=str(module["dashboard_data"]["Temperature"]))
+        temp_str += "|{moduleName}: {temperature} degC".format(moduleName=module["module_name"],temperature=str(module["dashboard_data"]["Temperature"]))
     return temp_str
 
 def refresh_and_print(stations):
