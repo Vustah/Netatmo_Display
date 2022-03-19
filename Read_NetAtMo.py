@@ -7,7 +7,8 @@ from pwinput import pwinput
 import socket
 import time
 import datetime
-
+import threading
+import sys
 
 def list_all_parameters(station):
     for key_1 in station:
@@ -56,11 +57,11 @@ def refresh_sensors(credentials):
         print(e, end=" ")
         print("\nA timeout occoured.")
         return None
+
     try:
         dev = lnetatmo.WeatherStationData(auth)
         stations = dev.stationByName()
         return stations
-
     except TypeError as e:
         print(e)
         pass
@@ -78,19 +79,27 @@ def getTemperatureString(stations):
         temp_str += "{moduleName}: {temperature} degC\n".format(moduleName=module["module_name"],temperature=str(module["dashboard_data"]["Temperature"]))
     return temp_str
 
-try:
-    if __name__ == "__main__":
-        print(" ")
-        credentials = setup()
+def refresh_and_print(stations):
+    
+    
+    printstring = getTemperatureString(stations)
+    print(printstring)
+    # time.sleep(10)
 
-        while(1):
-            stations = refresh_sensors(credentials)
-            # list_all_parameters(stations)
-            if stations == None:
-                break
-            printstring = getTemperatureString(stations)
-            print(printstring)
-            time.sleep(10)
+def fetch_and_write_temp(credentials):
+    while(1):
+        stations = refresh_sensors(credentials)
+        # list_all_parameters(stations)
+        if stations == None:
+            break
+        if kill_threads:
+            sys.exit(2)
 
-except KeyboardInterrupt:
-    exit(1)
+        refresh_and_print(stations)
+        
+
+if __name__ == "__main__":
+
+    credentials = setup()
+    temp_thread = threading.Thread(target=fetch_and_write_temp,args=([credentials]))
+    temp_thread.start()
