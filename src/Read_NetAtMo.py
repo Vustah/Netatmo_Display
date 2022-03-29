@@ -94,9 +94,6 @@ def fetch_and_write_temp(credentials):
         # list_all_parameters(stations)
         if stations == None:
             break
-        if kill_threads:
-            sys.exit(2)
-
         refresh_and_print(stations)
         
 
