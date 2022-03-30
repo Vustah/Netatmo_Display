@@ -88,13 +88,17 @@ def refresh_and_print(stations):
 
     
 def display_temperature(display_unit,temp):
+    ten_parts = int(((temp*10)%10)/10)
+    ones = int(temp%10)
+    tens = int((temp%100-ones)/10)
 
     display_unit.clear_display()
-    display_unit.place_cursor(0x3)
-    display_unit.write_number(int(temp%10))
-    display_unit.place_cursor(0x2)
-    display_unit.write_number(int((temp%100-temp%10)/10))
-    
+    display_unit.place_cursor(0x1)
+    display_unit.write_number(tens)
+    display_unit.write_number(ones)
+    display_unit.decimal_control(0b00000010)
+    display_unit.write_number(ten_parts)
+
     
 def fetch_and_write_temp(credentials):
     indoor_display = sevenSegment(0x71)

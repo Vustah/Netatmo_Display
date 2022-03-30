@@ -13,13 +13,16 @@ class sevenSegment:
         self.i2c_object.write_byte(self.address, clear)
         
     def place_cursor(self, position):
-	    self.i2c_object.write_byte(self.address, 0x79)
-	    self.i2c_object.write_byte(self.address, position)
+        self.i2c_object.write_byte(self.address, 0x79)
+        self.i2c_object.write_byte(self.address, position)
 	
-    def decimal_control(self,placement):    
+    def decimal_control(self,placement):
         self.i2c_object.write_byte(self.address, 0x77)
-        self.i2c_object.write_byte(self.address, placement)	    
-	
+        self.i2c_object.write_byte(self.address, placement)
+
+    
+
+
 def main():
     display = sevenSegment(0x71)
     display.clear_display()
