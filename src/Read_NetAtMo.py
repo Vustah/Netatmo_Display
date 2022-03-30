@@ -97,16 +97,17 @@ def display_temperature(display_unit,temp):
     ten_parts = int((temp*10)%10)
     ones = int(temp%10)
     tens = int((temp%100-ones)/10)
-    print(int(temp), tens, ones, ten_parts)
     
     try:
         display_unit.clear_display()
         if neg:
             display_unit.individual_segment(0,"g")
-        
-        display_unit.place_cursor(0x1)
-        display_unit.write_number(tens)
-        display_unit.write_number(ones)        
+        if tens > 0:
+            display_unit.place_cursor(0x1)
+            display_unit.write_number(tens)
+        else: 
+            display_unit.place_cursor(0x2)
+        display_unit.write_number(ones)
         display_unit.decimal_control(0b00000100)
         display_unit.write_number(ten_parts)
     except OSError:
