@@ -114,7 +114,7 @@ def fetch_and_write_temp(credentials):
         if stations["module_name"] == "Stue":
             display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
         refresh_and_print(stations)
-        time.sleep(5)
+        time.sleep(10)
         
         
 
