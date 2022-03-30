@@ -10,17 +10,35 @@ class sevenSegment:
  
     def clear_display(self):
         clear = 0x76
-        self.i2c_object.write_byte(self.address, clear)
+        self.write_number(clear)
         
     def place_cursor(self, position):
-        self.i2c_object.write_byte(self.address, 0x79)
-        self.i2c_object.write_byte(self.address, position)
+        self.write_number(0x79)
+        self.write_number(position)
 	
     def decimal_control(self,placement):
-        self.i2c_object.write_byte(self.address, 0x77)
-        self.i2c_object.write_byte(self.address, placement)
+        self.write_number(0x77)
+        self.write_number(placement)
 
-    
+    def individual_segment(self, digit, segment):
+        self.write_number(hex(digit+0x7B))
+        segment_binary = 0
+        if "a" in segment.lower():
+            segment_binary += 0b0000001 
+        if "b" in segment.lower():
+            segment_binary += 0b0000010 
+        if "c" in segment.lower():
+            segment_binary += 0b0000100
+        if "d" in segment.lower():
+            segment_binary += 0b0001000 
+        if "e" in segment.lower():
+            segment_binary += 0b0010000
+        if "f" in segment.lower():
+            segment_binary += 0b0100000
+        if "g" in segment.lower():
+            segment_binary += 0b1000000
+            
+        self.write_number(segment_binary)
 
 
 def main():

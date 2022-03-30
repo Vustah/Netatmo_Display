@@ -94,6 +94,9 @@ def display_temperature(display_unit,temp):
     tens = int((temp%100-ones)/10)
     try:
         display_unit.clear_display()
+        if temp < 0:
+            display_unit.individual_segment(0,"g")    
+        
         display_unit.place_cursor(0x1)
         display_unit.write_number(tens)
         display_unit.write_number(ones)        
@@ -113,7 +116,11 @@ def fetch_and_write_temp(credentials):
             pass
         elif stations["module_name"] == "Stue":
             display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
+            time.sleep(10)
+            for module in stations["modules"]:
+                display_temperature(indoor_display,module["dashboard_data"]["Temperature"])
             refresh_and_print(stations)
+
         time.sleep(10)
         
         
