@@ -9,6 +9,7 @@ import time
 import datetime
 import threading
 import sys
+from sevenSegment import sevenSegment
 
 def list_all_parameters(station):
     for key_1 in station:
@@ -82,23 +83,38 @@ def getTemperatureString(stations):
     return temp_str
 
 def refresh_and_print(stations):
-    
-    
     printstring = getTemperatureString(stations)
     print(printstring)
-    # time.sleep(10)
 
+    
+def display_temperature(display_unit,temp):
+
+    display_unit.clear_display()
+    display_unit.place_cursor(0x3)
+    display_unit.write_number(int(temp%10))
+    display_unit.place_cursor(0x2)
+    display_unit.write_number(int((temp%100-temp%10)/10))
+    
+    
 def fetch_and_write_temp(credentials):
+    indoor_display = sevenSegment(0x71)
     while(1):
         stations = refresh_sensors(credentials)
         # list_all_parameters(stations)
         if stations == None:
             break
-        refresh_and_print(stations)
+        if stations["module_name"] == "Stue":
+            print("sending Stue_temp to display")
+            display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
+        time.sleep(5)
+#        refresh_and_print(stations)
+        
         
 
 if __name__ == "__main__":
 
     credentials = setup()
-    temp_thread = threading.Thread(target=fetch_and_write_temp,args=([credentials]))
-    temp_thread.start()
+    fetch_and_write_temp(credentials)
+    
+#    temp_thread = threading.Thread(target=fetch_and_write_temp,args=([credentials]))
+  #  temp_thread.start()
