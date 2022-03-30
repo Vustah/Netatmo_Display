@@ -91,7 +91,7 @@ def display_temperature(display_unit,temp):
     ten_parts = int(round(temp,1))
     ones = int(temp%10)
     tens = int((temp%100-ones)/10)
-
+    print(tens, ones, ten_parts)
     display_unit.clear_display()
     display_unit.place_cursor(0x1)
     display_unit.write_number(tens)
