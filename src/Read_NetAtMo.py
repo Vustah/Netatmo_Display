@@ -108,14 +108,13 @@ def fetch_and_write_temp(credentials):
     indoor_display = sevenSegment(0x71)
     while(1):
         stations = refresh_sensors(credentials)
-        list_all_parameters(stations)
+        # list_all_parameters(stations)
         if stations == None:
             break
         if stations["module_name"] == "Stue":
-            
             display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
+        refresh_and_print(stations)
         time.sleep(5)
-#        refresh_and_print(stations)
         
         
 
@@ -123,6 +122,3 @@ if __name__ == "__main__":
 
     credentials = setup()
     fetch_and_write_temp(credentials)
-    
-#    temp_thread = threading.Thread(target=fetch_and_write_temp,args=([credentials]))
-  #  temp_thread.start()
