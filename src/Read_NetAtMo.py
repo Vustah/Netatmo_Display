@@ -96,7 +96,7 @@ def display_temperature(display_unit,temp):
     display_unit.place_cursor(0x1)
     display_unit.write_number(tens)
     display_unit.write_number(ones)
-    display_unit.decimal_control(0b00000010)
+    display_unit.decimal_control(0b00000100)
     display_unit.write_number(ten_parts)
 
     
@@ -108,7 +108,7 @@ def fetch_and_write_temp(credentials):
         if stations == None:
             break
         if stations["module_name"] == "Stue":
-            print("sending Stue_temp to display")
+            print("sending Stue_temp {temperature} to display".format(temperature=stations["dashboard_data"]["Temperature"]))
             display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
         time.sleep(5)
 #        refresh_and_print(stations)
