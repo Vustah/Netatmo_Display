@@ -88,15 +88,21 @@ def refresh_and_print(stations):
 
     
 def display_temperature(display_unit,temp):
+    if temp < 0:
+        neg = True
+        temp = abs(temp)
+    else:
+        neg = False
 
     ten_parts = int((temp*10)%10)
     ones = int(temp%10)
     tens = int((temp%100-ones)/10)
     print(int(temp), tens, ones, ten_parts)
+    
     try:
         display_unit.clear_display()
-        if temp < 0:
-            display_unit.individual_segment(0,"g")    
+        if neg:
+            display_unit.individual_segment(0,"g")
         
         display_unit.place_cursor(0x1)
         display_unit.write_number(tens)
