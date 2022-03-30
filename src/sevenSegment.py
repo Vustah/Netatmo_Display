@@ -21,7 +21,7 @@ class sevenSegment:
         self.write_number(placement)
 
     def individual_segment(self, digit, segment):
-        self.write_number(hex(digit+0x7B))
+        self.write_number(int(digit)+0x7B)
         segment_binary = 0
         if "a" in segment.lower():
             segment_binary += 0b0000001 
@@ -37,7 +37,7 @@ class sevenSegment:
             segment_binary += 0b0100000
         if "g" in segment.lower():
             segment_binary += 0b1000000
-            
+
         self.write_number(segment_binary)
 
 

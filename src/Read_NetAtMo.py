@@ -109,23 +109,24 @@ def display_temperature(display_unit,temp):
     
 def fetch_and_write_temp(credentials):
     indoor_display = sevenSegment(0x71)
-    while(1):
-        stations = refresh_sensors(credentials)
-        # list_all_parameters(stations)
-        if stations == None:
-            pass
-        elif stations["module_name"] == "Stue":
-            display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
-            time.sleep(10)
-            for module in stations["modules"]:
-                display_temperature(indoor_display,module["dashboard_data"]["Temperature"])
-            refresh_and_print(stations)
+    try:
+        while(1):
+            stations = refresh_sensors(credentials)
+            # list_all_parameters(stations)
+            if stations == None:
+                pass
+            elif stations["module_name"] == "Stue":
+                display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
+                time.sleep(10)
+                for module in stations["modules"]:
+                    display_temperature(indoor_display,module["dashboard_data"]["Temperature"])
+                refresh_and_print(stations)
 
-        time.sleep(10)
-        
+            time.sleep(10)
+    except KeyboardInterrupt:
+        indoor_display.clear_display()        
         
 
 if __name__ == "__main__":
-
     credentials = setup()
     fetch_and_write_temp(credentials)
