@@ -92,6 +92,7 @@ def display_temperature(display_unit,temp):
     ten_parts = int((temp*10)%10)
     ones = int(temp%10)
     tens = int((temp%100-ones)/10)
+    print(tens, ones, ten_parts)
     try:
         display_unit.clear_display()
         if temp < 0:
@@ -116,11 +117,11 @@ def fetch_and_write_temp(credentials):
             if stations == None:
                 pass
             elif stations["module_name"] == "Stue":
+                refresh_and_print(stations)
                 display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
                 time.sleep(10)
                 for module in stations["modules"]:
                     display_temperature(indoor_display,module["dashboard_data"]["Temperature"])
-                refresh_and_print(stations)
 
             time.sleep(10)
     except KeyboardInterrupt:
