@@ -92,7 +92,7 @@ def display_temperature(display_unit,temp):
     ten_parts = int((temp*10)%10)
     ones = int(temp%10)
     tens = int((temp%100-ones)/10)
-    print(tens, ones, ten_parts)
+    print(int(temp), tens, ones, ten_parts)
     try:
         display_unit.clear_display()
         if temp < 0:
