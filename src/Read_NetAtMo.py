@@ -101,17 +101,18 @@ def display_temperature(display_unit,temp):
         display_unit.write_number(ten_parts)
     except OSError:
         return 
+    
 
     
 def fetch_and_write_temp(credentials):
     indoor_display = sevenSegment(0x71)
     while(1):
         stations = refresh_sensors(credentials)
-        # list_all_parameters(stations)
+        list_all_parameters(stations)
         if stations == None:
             break
         if stations["module_name"] == "Stue":
-            print("sending Stue_temp {temperature} to display".format(temperature=stations["dashboard_data"]["Temperature"]))
+            
             display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
         time.sleep(5)
 #        refresh_and_print(stations)
