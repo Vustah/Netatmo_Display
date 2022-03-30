@@ -117,6 +117,7 @@ def display_temperature(display_unit,temp):
     
 def fetch_and_write_temp(credentials):
     indoor_display = sevenSegment(0x71)
+    outdoor_display = sevenSegment(0x51)
     try:
         while(1):
             stations = refresh_sensors(credentials)
@@ -128,7 +129,7 @@ def fetch_and_write_temp(credentials):
                 display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
                 time.sleep(10)
                 for module in stations["modules"]:
-                    display_temperature(indoor_display,module["dashboard_data"]["Temperature"])
+                    display_temperature(outdoor_display,module["dashboard_data"]["Temperature"])
 
             time.sleep(10)
     except KeyboardInterrupt:
