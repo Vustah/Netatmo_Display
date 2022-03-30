@@ -110,10 +110,10 @@ def fetch_and_write_temp(credentials):
         stations = refresh_sensors(credentials)
         # list_all_parameters(stations)
         if stations == None:
-            break
-        if stations["module_name"] == "Stue":
+            pass
+        elif stations["module_name"] == "Stue":
             display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
-        refresh_and_print(stations)
+            refresh_and_print(stations)
         time.sleep(10)
         
         
