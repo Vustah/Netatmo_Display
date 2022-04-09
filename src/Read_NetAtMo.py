@@ -139,7 +139,8 @@ def fetch_and_write_temp(credentials):
         exit_routine(11)
 
 def exit_routine(exit_code:int):
-    indoor_display.clear_display()        
+    indoor_display.clear_display()
+    print("Exiting the program with the program code: " + str(exit_code))
     exit(exit_code)
 
 if __name__ == "__main__":
