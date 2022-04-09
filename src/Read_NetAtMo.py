@@ -55,7 +55,7 @@ def refresh_sensors(credentials):
     except lnetatmo.AuthFailure as e:
         print(e, end=" ")
         print("\nWrong password or username.")
-        return None
+        exit_routine(10)
     except socket.timeout as e:
         print(e, end=" ")
         print("\nA timeout occoured.")
@@ -116,6 +116,8 @@ def display_temperature(display_unit,temp):
 
     
 def fetch_and_write_temp(credentials):
+    global indoor_display
+    global outdoor_display
     indoor_display = sevenSegment(0x71)
     outdoor_display = sevenSegment(0x51)
     try:
@@ -127,14 +129,18 @@ def fetch_and_write_temp(credentials):
             elif stations["module_name"] == "Stue":
                 refresh_and_print(stations)
                 display_temperature(indoor_display,stations["dashboard_data"]["Temperature"])
-                time.sleep(10)
+                # time.sleep(10)
                 for module in stations["modules"]:
                     display_temperature(outdoor_display,module["dashboard_data"]["Temperature"])
 
             time.sleep(10)
     except KeyboardInterrupt:
         indoor_display.clear_display()        
-        
+        exit_routine(11)
+
+def exit_routine(exit_code:int):
+    indoor_display.clear_display()        
+    exit(exit_code)
 
 if __name__ == "__main__":
     credentials = setup()
