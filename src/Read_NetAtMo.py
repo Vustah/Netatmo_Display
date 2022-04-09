@@ -136,6 +136,7 @@ def fetch_and_write_temp(credentials):
             time.sleep(10)
     except KeyboardInterrupt:
         indoor_display.clear_display()        
+        outdoor_display.clear_display()        
         exit_routine(11)
 
 def exit_routine(exit_code:int):
